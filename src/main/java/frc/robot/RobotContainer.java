@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.BackoutCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.OuttakeCommand;
+import frc.robot.commands.RotateToTargetCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SourceIntakeCommand;
 import frc.robot.commands.StuckCommand;
@@ -26,7 +27,6 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-
 
 public class RobotContainer {
   private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
@@ -45,7 +45,6 @@ public class RobotContainer {
                                                                // driving in open loop
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-  
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
   private final RobotStateEstimator estimator = new RobotStateEstimator(drivetrain);
@@ -58,7 +57,7 @@ public class RobotContainer {
             .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ));
 
-   // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
@@ -70,22 +69,30 @@ public class RobotContainer {
     }
     drivetrain.registerTelemetry(logger::telemeterize);
 
-    joystick.rightTrigger().whileTrue(new BackoutCommand(m_IntakeSubsystem, m_IndexerSubsystem, m_ShooterSubsystem).andThen(new ShooterCommand(m_IntakeSubsystem, m_ShooterSubsystem, m_IndexerSubsystem, 9.41)));
-    // joystick.rightTrigger().whileTrue(new ShooterCommand(m_IntakeSubsystem, m_ShooterSubsystem, m_IndexerSubsystem, 
-    //                                                               m_ShooterSubsystem.angleMap.get(FieldLayout.distanceFromAllianceWall(drivetrain.getState().Pose.getX(), false))));
+    joystick.rightTrigger().
+      whileTrue(new BackoutCommand(m_IntakeSubsystem, m_IndexerSubsystem, m_ShooterSubsystem).
+      andThen(new RotateToTargetCommand(drivetrain)).
+      andThen(new ShooterCommand(m_IntakeSubsystem, m_ShooterSubsystem, m_IndexerSubsystem,
+    9.41)));
+    // joystick.rightTrigger()
+    //     .whileTrue(new BackoutCommand(m_IntakeSubsystem, m_IndexerSubsystem, m_ShooterSubsystem)
+    //         .andThen(new RotateToTargetCommand(drivetrain))
+    //         .andThen(new ShooterCommand(m_IntakeSubsystem, m_ShooterSubsystem, m_IndexerSubsystem,
+    //             m_ShooterSubsystem.angleMap
+    //                 .get(FieldLayout.distanceFromAllianceWall(drivetrain.getState().Pose.getX(), false)))));
     joystick.rightBumper().whileTrue(new IntakeCommand(m_IntakeSubsystem, m_ShooterSubsystem, m_IndexerSubsystem));
-    // joystick.povLeft().whileTrue(new OuttakeCommand(m_IndexerSubsystem, m_IntakeSubsystem, m_ShooterSubsystem));
+    // joystick.povLeft().whileTrue(new OuttakeCommand(m_IndexerSubsystem,
+    // m_IntakeSubsystem, m_ShooterSubsystem));
     joystick.x().whileTrue(new OuttakeCommand(m_IndexerSubsystem, m_IntakeSubsystem, m_ShooterSubsystem));
     joystick.y().whileTrue(new StuckCommand(m_IndexerSubsystem, m_IntakeSubsystem, m_ShooterSubsystem));
-    joystick.a().and(joystick.rightTrigger()).whileTrue(new ShooterCommand(m_IntakeSubsystem, m_ShooterSubsystem, m_IndexerSubsystem, TunerConstants.kSubwooferAngle));
+    joystick.a().and(joystick.rightTrigger()).whileTrue(
+        new ShooterCommand(m_IntakeSubsystem, m_ShooterSubsystem, m_IndexerSubsystem, TunerConstants.kSubwooferAngle));
     joystick.leftTrigger().whileTrue(new SourceIntakeCommand(m_IndexerSubsystem, m_ShooterSubsystem));
   }
 
-  public ShooterSubsystem getShooterSubsystem()
-  {
+  public ShooterSubsystem getShooterSubsystem() {
     return m_ShooterSubsystem;
   }
-
 
   public void setInitPose(Pose2d pose) {
     drivetrain.seedFieldRelative(pose);
@@ -96,7 +103,7 @@ public class RobotContainer {
   public RobotContainer() {
     configureBindings();
   }
-  
+
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");
   }
