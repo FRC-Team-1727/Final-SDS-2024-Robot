@@ -69,14 +69,14 @@ public class RobotContainer {
     }
     drivetrain.registerTelemetry(logger::telemeterize);
 
-    joystick.rightTrigger().whileTrue(new ShooterCommand(m_IntakeSubsystem, m_ShooterSubsystem, m_IndexerSubsystem, 9.41));
+    joystick.rightTrigger().whileTrue(new BackoutCommand(m_IntakeSubsystem, m_IndexerSubsystem, m_ShooterSubsystem).andThen(new ShooterCommand(m_IntakeSubsystem, m_ShooterSubsystem, m_IndexerSubsystem, 9.41)));
     // joystick.rightTrigger().whileTrue(new ShooterCommand(m_IntakeSubsystem, m_ShooterSubsystem, m_IndexerSubsystem, 
     //                                                               m_ShooterSubsystem.angleMap.get(FieldLayout.distanceFromAllianceWall(drivetrain.getState().Pose.getX(), false))));
-    joystick.rightBumper().whileTrue(new IntakeCommand(m_IntakeSubsystem, m_ShooterSubsystem, m_IndexerSubsystem).andThen(new BackoutCommand(m_IntakeSubsystem, m_IndexerSubsystem, m_ShooterSubsystem)));
+    joystick.rightBumper().whileTrue(new IntakeCommand(m_IntakeSubsystem, m_ShooterSubsystem, m_IndexerSubsystem));
     // joystick.povLeft().whileTrue(new OuttakeCommand(m_IndexerSubsystem, m_IntakeSubsystem, m_ShooterSubsystem));
-    joystick.povUp().whileTrue(new OuttakeCommand(m_IndexerSubsystem, m_IntakeSubsystem, m_ShooterSubsystem));
+    joystick.x().whileTrue(new OuttakeCommand(m_IndexerSubsystem, m_IntakeSubsystem, m_ShooterSubsystem));
     joystick.y().whileTrue(new StuckCommand(m_IndexerSubsystem, m_IntakeSubsystem, m_ShooterSubsystem));
-
+    joystick.a().and(joystick.rightTrigger()).whileTrue(new ShooterCommand(m_IntakeSubsystem, m_ShooterSubsystem, m_IndexerSubsystem, TunerConstants.kSubwooferAngle));
   }
 
   public ShooterSubsystem getShooterSubsystem()

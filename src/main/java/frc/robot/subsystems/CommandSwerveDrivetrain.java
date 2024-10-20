@@ -8,6 +8,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -98,12 +99,12 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         }
     }
 
-    // public void setUpAutoBuilder() {
-    //     AutoBuilder.configureHolonomic(this::getPose,
-    //             this::setInitPose, 
-    //             this::getChassisSpeed, 
-    //             this::driveRobotRelative,null, null, null);
-    // }
+    public void setUpAutoBuilder() {
+        AutoBuilder.configureHolonomic(this::getPose,
+                this::setInitPose, 
+                this::getChassisSpeed, 
+                this::driveRobotRelative, new HolonomicPathFollowerConfig(UpdateFrequency, ModuleCount, null), null, this);
+    }
 
     public void setInitPose(Pose2d pose) {
         // getState().Pose = pose;

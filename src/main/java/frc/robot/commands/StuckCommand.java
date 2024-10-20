@@ -28,10 +28,10 @@ public class StuckCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        m_IntakeSubsystem.setIntake(-TunerConstants.kBackoutSpeed);
-        m_IndexerSubsystem.setIndexer(-TunerConstants.kBackoutSpeed);
+        m_IntakeSubsystem.setIntake(-TunerConstants.kOuttakeSpd);
+        m_IndexerSubsystem.setIndexer(-TunerConstants.kOuttakeSpd);
         m_ShooterSubsystem.moveAngler(TunerConstants.kStuckAngle);
-        m_ShooterSubsystem.setRPM(850);
+        m_ShooterSubsystem.setRPM(1000);
     }
 
     // Called once the command ends or is interrupted.
