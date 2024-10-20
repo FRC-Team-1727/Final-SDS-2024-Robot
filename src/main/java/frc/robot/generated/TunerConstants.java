@@ -178,9 +178,11 @@ public class TunerConstants {
         public static final double kIndexAngle = 7.211;
         public static final double kStuckAngle = 14.5;
         public static final double kSubwooferAngle = 5;
+        public static final double kSourceAngle = 6;
         public static final double kDefaultAngle = 6.9118194580078125;
         public static final double kIntakeSpd = .75;
         public static final double kIndexerSpd = .75;
+        public static final double kInverseIndexerSpd = -.75;
         public static final double kOuttakeSpd = 0.9;
         public static final double kBackoutSpeed = 0.4;
 

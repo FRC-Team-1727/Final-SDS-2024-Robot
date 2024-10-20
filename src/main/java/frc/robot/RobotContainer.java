@@ -19,6 +19,7 @@ import frc.robot.commands.BackoutCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.SourceIntakeCommand;
 import frc.robot.commands.StuckCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -77,6 +78,7 @@ public class RobotContainer {
     joystick.x().whileTrue(new OuttakeCommand(m_IndexerSubsystem, m_IntakeSubsystem, m_ShooterSubsystem));
     joystick.y().whileTrue(new StuckCommand(m_IndexerSubsystem, m_IntakeSubsystem, m_ShooterSubsystem));
     joystick.a().and(joystick.rightTrigger()).whileTrue(new ShooterCommand(m_IntakeSubsystem, m_ShooterSubsystem, m_IndexerSubsystem, TunerConstants.kSubwooferAngle));
+    joystick.leftTrigger().whileTrue(new SourceIntakeCommand(m_IndexerSubsystem, m_ShooterSubsystem));
   }
 
   public ShooterSubsystem getShooterSubsystem()
