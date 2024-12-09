@@ -15,7 +15,7 @@ public class BackoutCommand extends Command {
         m_IntakeSubsystem = intake;
         m_IndexerSubsystem = indexer;
         m_ShooterSubsystem = shooter;
-        addRequirements(m_IndexerSubsystem, m_IntakeSubsystem, m_ShooterSubsystem);
+        addRequirements(indexer, intake, shooter);
     }
 
     // Called when the command is initially scheduled.
@@ -32,7 +32,7 @@ public class BackoutCommand extends Command {
         {
              m_IntakeSubsystem.setIntake(-TunerConstants.kBackoutSpeed);
              m_IndexerSubsystem.setIndexer(TunerConstants.kBackoutSpeed);
-             m_ShooterSubsystem.setRPM(-300);
+             m_ShooterSubsystem.setRPM(-500);
              m_ShooterSubsystem.moveAngler(TunerConstants.kIndexAngle);
 
         }

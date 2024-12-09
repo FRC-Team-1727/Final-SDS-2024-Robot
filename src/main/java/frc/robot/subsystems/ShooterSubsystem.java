@@ -85,9 +85,18 @@ public class ShooterSubsystem extends SubsystemBase {
       return angler.getEncoder().getPosition();
    }
 
+   public void aim(double distance){
+      //set angle based on distance from target
+      //look up table code
+   }
+
+   public void autoAim(double distance){
+      // sets angle to shooting position 
+      //look up table code
+   }
+
    @Override
    public void periodic() {
-
       System.out.println("Angle : " + angler.getEncoder().getPosition());
    }
 }

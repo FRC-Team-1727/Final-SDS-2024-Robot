@@ -25,6 +25,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run(); 
+    System.out.println("distance : " + FieldLayout.distanceFromAllianceWall(m_robotContainer.getCommandSwerveDrivetrain().getState().Pose.getX(), false));
+
   }
 
   @Override
@@ -41,7 +43,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    m_robotContainer.setInitPose(new Pose2d(new Translation2d(0, 0), new Rotation2d(0)));
+    m_robotContainer.setInitPose(new Pose2d(new Translation2d(15.14,7.016), new Rotation2d(0)));
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
