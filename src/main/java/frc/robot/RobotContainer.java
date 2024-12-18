@@ -11,6 +11,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -142,11 +143,10 @@ public RobotContainer() {
 
     registerNamedCommands();
    
-    autoChooser = AutoBuilder.buildAutoChooser("Tests");
     autoChooser.setDefaultOption("None", Commands.none());
-    autoChooser.addOption("RAA", new PathPlannerAuto("RAA"));
-    autoChooser.addOption("Test", new PathPlannerAuto("Test"));
-    autoChooser.addOption("New Auto", new PathPlannerAuto("New Auto"));
+    autoChooser.addOption("OnlyShooting", new PathPlannerAuto("shoot")); //works
+    autoChooser.addOption("OnlyMoving", new PathPlannerAuto("TestMove")); //doesnt work
+    autoChooser.addOption("MoveandShoot", new PathPlannerAuto("MoveandShoot")); //both moves and shoots ignores the move command but continues on and finishes the auto by shooting
     SmartDashboard.putData("Auto Mode", autoChooser);
 
     configureBindings();
