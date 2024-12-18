@@ -34,7 +34,7 @@ public class IndexerSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    System.out.println("sensor 1 : " + getSensor());
-    System.out.println("sensor 2 : " + getSensor2());
+    // System.out.println("sensor 1 : " + getSensor());
+    // System.out.println("sensor 2 : " + getSensor2());
   }
 }

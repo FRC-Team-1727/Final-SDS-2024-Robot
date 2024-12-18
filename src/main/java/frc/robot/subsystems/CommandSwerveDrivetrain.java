@@ -13,6 +13,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -24,6 +25,7 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.RobotContainer;
+import frc.robot.generated.TunerConstants;
 
 /**
  * Class that extends the Phoenix SwerveDrivetrain class and implements
@@ -49,6 +51,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             startSimThread();
         }
         this.modules = modules;
+        m_odometry = new SwerveDrivePoseEstimator(m_kinematics, m_fieldRelativeOffset, m_modulePositions, new Pose2d());
         setUpAutoBuilder();
     }
 
@@ -107,14 +110,16 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                 hasAppliedOperatorPerspective = true;
             });
         }
+        System.out.println(getPose());
     }
 
     public void setUpAutoBuilder() {
-        AutoBuilder.configureHolonomic(this::getPose,
-                this::setInitPose, 
+        AutoBuilder.configureHolonomic(
+                this::getPose,
+                this::resetPose, 
                 this::getChassisSpeed, 
                 this::driveRobotRelative, 
-                new HolonomicPathFollowerConfig(UpdateFrequency, ModuleCount, null), 
+                TunerConstants.kConfig, //new HolonomicPathFollowerConfig(UpdateFrequency, ModuleCount, null)
                 () -> {
                     var alliance  = DriverStation.getAlliance();
                     if(alliance.isPresent())
@@ -130,6 +135,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         // getState().Pose = pose;
         seedFieldRelative(pose);
         getPigeon2().setYaw(pose.getRotation().getDegrees());
+    }
+    public void resetPose(Pose2d pose2d){
+        m_odometry.resetPosition(Rotation2d.fromDegrees(pose2d.getRotation().getDegrees()), m_modulePositions, pose2d);
     }
 
     public Pose2d getPose() {

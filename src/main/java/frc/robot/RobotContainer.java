@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.BackoutCommand;
@@ -57,7 +58,7 @@ public class RobotContainer {
   private final Telemetry logger = new Telemetry(MaxSpeed);
   private final RobotStateEstimator estimator = new RobotStateEstimator(drivetrain);
  
-  private final SendableChooser<Command> autoChooser;
+  SendableChooser<Command> autoChooser = new SendableChooser<>();
 
     
   private void configureBindings() {
@@ -126,24 +127,29 @@ public class RobotContainer {
       Commands.sequence(
           m_ShooterSubsystem.runOnce(
             () -> {
-              m_ShooterSubsystem.setRPM(500);
+              m_ShooterSubsystem.setRPM(200);
             }),
-            Commands.waitSeconds(0.25),
+            Commands.waitSeconds(2),
             m_ShooterSubsystem.runOnce(
               () -> {
                 m_ShooterSubsystem.setRPM(0);
               })));
+
+    NamedCommands.registerCommand("Test", null);
+    NamedCommands.registerCommand("Print Completed", new InstantCommand(() -> System.out.println("Completed Command")));
   }
 public RobotContainer() {
 
     registerNamedCommands();
    
-    autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Autochooser", autoChooser);
-    //NamedCommands.registerCommand("ShooterCommand", new ShooterCommand(m_IntakeSubsystem,m_ShooterSubsystem,m_IndexerSubsystem,0));
-    
+    autoChooser = AutoBuilder.buildAutoChooser("Tests");
+    autoChooser.setDefaultOption("None", Commands.none());
+    autoChooser.addOption("RAA", new PathPlannerAuto("RAA"));
+    autoChooser.addOption("Test", new PathPlannerAuto("Test"));
+    autoChooser.addOption("New Auto", new PathPlannerAuto("New Auto"));
+    SmartDashboard.putData("Auto Mode", autoChooser);
+
     configureBindings();
-   
   }
  
   public Command getAutonomousCommand() {
@@ -151,6 +157,6 @@ public RobotContainer() {
     // .andThen(new ShooterCommand(m_IntakeSubsystem, m_ShooterSubsystem, m_IndexerSubsystem, TunerConstants.kSubwooferAngle));
   //  return autoChooser.getSelected();
   //return Commands.print("No autonomous command configured");
-  return new PathPlannerAuto("New Auto");
+  return autoChooser.getSelected();
 }
 }

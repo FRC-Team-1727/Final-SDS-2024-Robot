@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2.0,
-      "y": 4.116276107906323
+      "x": 1.8865402036753083,
+      "y": 4.470927015508422
     },
     "rotation": 0
   },
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "PEPEPEPEP"
+            "pathName": "REEEEE"
           }
         }
       ]

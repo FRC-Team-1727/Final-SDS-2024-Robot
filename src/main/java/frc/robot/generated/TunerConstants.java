@@ -11,6 +11,9 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstantsFactory;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.ClosedLoopOutputType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants.SteerFeedbackType;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.util.Units;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -185,6 +188,15 @@ public class TunerConstants {
         public static final double kInverseIndexerSpd = -.75;
         public static final double kOuttakeSpd = 0.9;
         public static final double kBackoutSpeed = 0.4;
+
+        //drive stuff
+        public static final HolonomicPathFollowerConfig kConfig = 
+                new HolonomicPathFollowerConfig(
+                        new PIDConstants(5.0, 0.0, 0.0), 
+                        new PIDConstants(5.0, 0.0, 0.0), 
+                        3.5, 
+                        .32, 
+                        new ReplanningConfig());
 
         private static final SwerveModuleConstants FrontLeft = ConstantCreator.createModuleConstants(
                         kFrontLeftSteerMotorId, kFrontLeftDriveMotorId, kFrontLeftEncoderId, kFrontLeftEncoderOffset,

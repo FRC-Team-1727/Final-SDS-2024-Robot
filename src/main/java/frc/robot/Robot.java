@@ -25,7 +25,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run(); 
-    System.out.println("distance : " + FieldLayout.distanceFromAllianceWall(m_robotContainer.getCommandSwerveDrivetrain().getState().Pose.getX(), false));
+    // System.out.println("distance : " + FieldLayout.distanceFromAllianceWall(m_robotContainer.getCommandSwerveDrivetrain().getState().Pose.getX(), false));
 
   }
 

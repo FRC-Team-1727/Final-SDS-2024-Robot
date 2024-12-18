@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 public class Autos {
     public static Command preload() {
         return Commands.sequence(
-            NamedCommands.getCommand("start_shooter"));
+            NamedCommands.getCommand("start_shooter"),
+            NamedCommands.getCommand("Test"));
       }
 }
